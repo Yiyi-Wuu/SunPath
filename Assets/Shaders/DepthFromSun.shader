@@ -1,0 +1,33 @@
+Shader "Custom/DepthFromSun"
+{
+    SubShader
+    {
+        Tags { "RenderType" = "Opaque" }
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+
+            struct v2f
+            {
+                float4 pos : SV_POSITION;
+            };
+
+            v2f vert(appdata_base v)
+            {
+                v2f o;
+                o.pos = UnityObjectToClipPos(v.vertex);
+                return o;
+            }
+
+            fixed4 frag() : SV_Target
+            {
+                return fixed4(1, 1, 1, 1); // 纯白即可，深度由 RenderTexture 自动记录
+            }
+            ENDCG
+        }
+    }
+        FallBack Off
+}
