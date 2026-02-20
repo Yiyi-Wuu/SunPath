@@ -187,18 +187,18 @@ public class SunMotion : MonoBehaviour
 
     async Task PrecomputeSolarPositions(DateTime date)
     {
-        minuteSolarPositions.Clear();
+        List<(float zenith, float azimuth)> newPositions = new List<(float zenith, float azimuth)>();
 
         for (int m = 0; m < 24 * 60; m++)
         {
             DateTime dt = date.AddMinutes(m);
             var pos = await GetSunPositionFromAPI(dt, latitude, longitude, altitude);
-            minuteSolarPositions.Add(pos);
+            newPositions.Add(pos);
         }
+
         minuteSolarPositions = newPositions;
         UnityEngine.Debug.Log($"Finished precomputing positions for {date:yyyy-MM-dd}");
     }
-
     async Task<(float zenith, float azimuth)> GetSunPositionFromAPI(DateTime time, float lat, float lon, float alt)
     {
         try
